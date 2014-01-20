@@ -10,10 +10,6 @@ import edu.ecpi.common.*;
 
 
 public class GraphicalView extends JFrame implements INotifiable, MouseListener{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	protected IController controller;
 	protected GCanvas canvas;
@@ -22,7 +18,6 @@ public class GraphicalView extends JFrame implements INotifiable, MouseListener{
 	protected Cell[][] cellGrid;
 	
 	public GraphicalView(){
-		
 		//System.out.println("ContentPane width:" + getContentPane().getWidth());
 		//System.out.println("ContentPane height:" + getContentPane().getHeight());
 		canvas = new GCanvas();

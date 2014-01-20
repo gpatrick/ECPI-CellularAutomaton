@@ -1,3 +1,14 @@
+/*
+ * Author: Greg Patrick
+ * 
+ * Description: The Main class is the entry point for the OddNeighbors program. It uses the 
+ * 				CellularAutomaton framework (which employs the MVC pattern) to execute a 
+ * 				simple program where each cell sets its value to the sum of the values of its 
+ * 				neighbors that contain odd values.
+ * 
+ * Known Bugs: None
+ */
+
 package edu.ecpi.oddneighbors;
 
 import java.util.Timer;
@@ -12,7 +23,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		if(args.length < 2){
-			System.out.println("Usage: oddneighbors row col");
+			System.out.println("Usage: oddneighbors rows cols");
 			System.exit(1);
 		}
 		
@@ -20,12 +31,12 @@ public class Main {
 		int cols = Integer.parseInt(args[1]);
 
 		/*
-		 * Create new automaton
+		 * Create new automaton (the model in our MVC solution)
 		 */
 		OddNeighborAutomaton model = new OddNeighborAutomaton(rows, cols);
 		
 		/*
-		 * Initialize automaton
+		 * Initialize automaton (cells are numbered row by row from 0 to (rows * cols) 
 		 */
 		int counter = 0;
 		for(int i = 0; i < rows; i++){
@@ -34,25 +45,24 @@ public class Main {
 			}
 		}
 		
-		//System.out.println("Before: \n" + model);
-		
 		/*
-		 * Compute one time step
+		 * Setup the view and controller. The GraphicalView accepts mouse clicks in order to 
+		 * toggle a cell (by updating the model)... NOTE: The view is only updated when it is 
+		 * told to update itself because the model changed, i.e, the GraphicalView does not change
+		 * the cell's color internally as a result of the click
 		 */
-		//model.step();
-		
-//		System.out.println("After: \n" + model);
-		
 		Controller controller = new Controller();
-		//ConsoleView view = new ConsoleView();
-		
 		GraphicalView view = new GraphicalView();
 		
 		controller.registerModelObject(model);
 		controller.registerViewObject(view);
-		//controller.changed(model, "View");
+		
 		view.update(model, null);
 		
+		/*
+		 * Setup a timer to fire a changed event every second. This causes the automaton to 
+		 * automatically update its state.
+		 */
 		Timer t = new Timer();
 		Task task = new Task(controller, model);
 		t.scheduleAtFixedRate(task, 1000, 2000);

@@ -21,15 +21,25 @@ public class OddNeighborAutomaton extends CellularAutomaton {
 		return result;
 	}
 	
+	/*
+	 * The update method handles two cases. 
+	 *    Case 1: The object being updated is a cell. This happens as a result of the user 
+	 *    		  clicking a cell in the view. In this case, convert the cell from even to odd
+	 *    		  (or vice versa) and let the controller know that a cell changed, and
+	 *    
+	 *    Case 2: Update was called as a result of the timer firing. In this case, simply step
+	 *    		  the automaton and notify the controller that the state has changed.
+	 * 
+	 * @see edu.ecpi.cellularautomaton.CellularAutomaton#update(java.lang.Object, java.lang.String)
+	 */
 	public void update(Object o, String updateType){
-		if(o.getClass() == Cell.class){ //Is this a cell class
+		if(o.getClass() == Cell.class){ //Is this object a cell class
 			Cell cell = (Cell) o;
 			int currentCellValue = getCell(cell.getRow(), cell.getCol());
 			setCell(cell.getRow(), cell.getCol(), currentCellValue + 1);
 			fireChanged(updateType);
 		}
 		else{
-			//System.out.println("Model: changed(" + o + ", " + updateType + ")");
 			step();
 			fireChanged(updateType);
 		}
